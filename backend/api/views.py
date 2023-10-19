@@ -1,7 +1,11 @@
 from django.shortcuts import render
-from django.http import JsonResponse
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from api.models import Note
+from api.serializers import NoteSerializer
 
 
+@api_view(['GET'])
 def get_routes(request):
     routes = [
         {
@@ -35,4 +39,11 @@ def get_routes(request):
             'description': 'Delete an exiting note'
         },
     ]
-    return JsonResponse(routes, safe=False)
+    return Response(routes)
+
+
+@api_view(['GET'])
+def get_notes(request):
+    notes = Note.objects.all()
+    serializer = NoteSerializer(notes, many=True)
+    return Response(serializer.data)

@@ -1,8 +1,13 @@
-from django.urls import path
+from django.urls import include, path
+from rest_framework import routers
 from api import views
 
 
+router = routers.DefaultRouter()
+router.register(r"users", views.UserViewSet)
+router.register(r"groups", views.GroupViewSet)
+router.register(r"notes", views.NoteViewSet)
+
 urlpatterns = [
-    path('', views.get_routes, name="routes"),
-    path('notes/', views.get_notes, name="notes"),
+    path('', include(router.urls)),
 ]
